@@ -1,6 +1,5 @@
 package com.songoda.core.world;
 
-import com.songoda.core.compatibility.CompatibleHand;
 import com.songoda.core.compatibility.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -18,12 +17,24 @@ public class SItemStack {
         this.item = item;
     }
 
-    public SItemStack(CompatibleHand hand, Player player) {
-        this.item = hand.getItem(player);
+    private static int shouldApplyDamage(int unbreakingEnchantLevel, int damageAmount) {
+        int result = 0;
+
+        for (int i = 0; i < damageAmount; ++i) {
+            if (shouldApplyDamage(unbreakingEnchantLevel)) {
+                ++result;
+            }
+        }
+
+        return result;
     }
 
-    public ItemStack addDamage(Player player, int damage) {
-        return addDamage(player, damage, false);
+    private static boolean shouldApplyDamage(int unbreakingEnchantLevel) {
+        if (unbreakingEnchantLevel <= 0) {
+            return true;
+        }
+
+        return Math.random() <= 1.0 / (unbreakingEnchantLevel + 1);
     }
 
     /**
@@ -47,8 +58,7 @@ public class SItemStack {
         if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)) {
             // ItemStack.setDurability(short) still works in 1.13-1.14, but use these methods now
             ItemMeta meta = item.getItemMeta();
-            if (meta instanceof Damageable) {
-                Damageable damageable = ((Damageable) meta);
+            if (meta instanceof Damageable damageable) {
 
                 if (respectVanillaUnbreakingEnchantments) {
                     damage = shouldApplyDamage(meta.getEnchantLevel(Enchantment.DURABILITY), damage);
@@ -106,30 +116,5 @@ public class SItemStack {
 
         // Play the sound effect for item break
         player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
-    }
-
-
-    public ItemStack getItem() {
-        return item;
-    }
-
-    private static int shouldApplyDamage(int unbreakingEnchantLevel, int damageAmount) {
-        int result = 0;
-
-        for (int i = 0; i < damageAmount; ++i) {
-            if (shouldApplyDamage(unbreakingEnchantLevel)) {
-                ++result;
-            }
-        }
-
-        return result;
-    }
-
-    private static boolean shouldApplyDamage(int unbreakingEnchantLevel) {
-        if (unbreakingEnchantLevel <= 0) {
-            return true;
-        }
-
-        return Math.random() <= 1.0 / (unbreakingEnchantLevel + 1);
     }
 }

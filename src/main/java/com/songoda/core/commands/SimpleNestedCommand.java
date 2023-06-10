@@ -11,11 +11,6 @@ public class SimpleNestedCommand {
         this.parent = parent;
     }
 
-    public SimpleNestedCommand addSubCommand(AbstractCommand command) {
-        command.getCommands().forEach(cmd -> children.put(cmd.toLowerCase(), command));
-        return this;
-    }
-
     public SimpleNestedCommand addSubCommands(AbstractCommand... commands) {
         Stream.of(commands).forEach(command -> command.getCommands().forEach(cmd -> children.put(cmd.toLowerCase(), command)));
         return this;

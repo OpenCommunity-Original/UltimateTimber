@@ -63,8 +63,7 @@ public enum LegacyMaterialBlockType {
     final String blockMaterialName;
     final byte blockData;
     final String alternateBlockMaterialName;
-    final Material blockMaterial, alternateBlockMaterial;
-    final boolean requiresData; // some blocks require data to render properly (double blocks)
+    final Material blockMaterial;
 
     LegacyMaterialBlockType(String blockMaterial) {
         this(blockMaterial, (byte) -1, null, false);
@@ -85,9 +84,7 @@ public enum LegacyMaterialBlockType {
     LegacyMaterialBlockType(String blockMaterial, byte data, String alternateMaterial, boolean requiresData) {
         this.blockMaterialName = blockMaterial;
         this.alternateBlockMaterialName = alternateMaterial;
-        this.requiresData = requiresData;
         this.blockMaterial = Material.getMaterial(blockMaterialName);
-        this.alternateBlockMaterial = Material.getMaterial(alternateBlockMaterialName);
         this.blockData = data;
     }
 
@@ -103,23 +100,8 @@ public enum LegacyMaterialBlockType {
         return getFromLegacy(lookup, (byte) -1);
     }
 
-    public String getBlockMaterialName() {
-        return blockMaterialName;
-    }
-
-    public String getAlternateMaterialName() {
-        return alternateBlockMaterialName;
-    }
-
     public Material getBlockMaterial() {
         return blockMaterial;
     }
 
-    public Material getAlternateBlockMaterial() {
-        return alternateBlockMaterial;
-    }
-
-    public boolean requiresData() {
-        return requiresData;
-    }
 }

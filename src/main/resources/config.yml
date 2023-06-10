@@ -493,7 +493,7 @@ global-log-loot:
 global-leaf-loot:
   0:
     material: GOLDEN_APPLE
-    chance: 0.1
+    chance: 0
 
 # Custom entire tree loot that is available for all tree types
 # The loot will be dropped only one time for the entire tree

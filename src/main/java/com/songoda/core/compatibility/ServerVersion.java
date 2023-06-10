@@ -1,6 +1,5 @@
 package com.songoda.core.compatibility;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 
 public enum ServerVersion {
@@ -8,7 +7,6 @@ public enum ServerVersion {
 
     private final static String serverPackagePath;
     private final static String serverPackageVersion;
-    private final static String serverReleaseVersion;
     private final static ServerVersion serverVersion;
     private final static boolean isMocked;
 
@@ -21,11 +19,9 @@ public enum ServerVersion {
 
             serverPackagePath = "org.bukkit.craftbukkit." + packageVersionShard;
             serverPackageVersion = packageVersionShard;
-            serverReleaseVersion = "0";
         } else {
             serverPackagePath = srvPackage;
             serverPackageVersion = serverPackagePath.substring(serverPackagePath.lastIndexOf('.') + 1);
-            serverReleaseVersion = serverPackageVersion.indexOf('R') != -1 ? serverPackageVersion.substring(serverPackageVersion.indexOf('R') + 1) : "";
         }
 
         serverVersion = getVersion();
@@ -45,24 +41,12 @@ public enum ServerVersion {
         return serverPackageVersion;
     }
 
-    public static String getVersionReleaseNumber() {
-        return serverReleaseVersion;
-    }
-
     public static ServerVersion getServerVersion() {
         return serverVersion;
     }
 
     public static boolean isServerVersion(ServerVersion version) {
         return serverVersion == version;
-    }
-
-    public static boolean isServerVersion(ServerVersion... versions) {
-        return ArrayUtils.contains(versions, serverVersion);
-    }
-
-    public static boolean isServerVersionAbove(ServerVersion version) {
-        return serverVersion.ordinal() > version.ordinal();
     }
 
     public static boolean isServerVersionAtLeast(ServerVersion version) {
@@ -75,18 +59,6 @@ public enum ServerVersion {
 
     public static boolean isServerVersionBelow(ServerVersion version) {
         return serverVersion.ordinal() < version.ordinal();
-    }
-
-    public boolean isLessThan(ServerVersion other) {
-        return this.ordinal() < other.ordinal();
-    }
-
-    public boolean isAtOrBelow(ServerVersion other) {
-        return this.ordinal() <= other.ordinal();
-    }
-
-    public boolean isGreaterThan(ServerVersion other) {
-        return this.ordinal() > other.ordinal();
     }
 
     public boolean isAtLeast(ServerVersion other) {

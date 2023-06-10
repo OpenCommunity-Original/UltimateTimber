@@ -1,11 +1,6 @@
 package com.songoda.core.hooks.worldguard;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -21,13 +16,11 @@ import java.util.logging.Level;
 public class WorldGuardRegionHandler {
     static boolean wgPlugin;
     static Object worldGuardPlugin;
-    static boolean wg_v7 = false;
     static boolean legacy_v60 = false;
     static boolean legacy_v62 = false;
     static boolean legacy_v5 = false;
     static Method legacy_getRegionManager = null;
     static Method legacy_getApplicableRegions_Region = null;
-    static Method legacy_getApplicableRegions_Location = null;
     static Constructor legacy_newProtectedCuboidRegion;
     static Class legacy_blockVectorClazz;
     static Constructor legacy_newblockVector;
@@ -41,7 +34,6 @@ public class WorldGuardRegionHandler {
             try {
                 // if this class exists, we're on 7.x
                 Class.forName("com.sk89q.worldguard.protection.flags.WeatherTypeFlag");
-                wg_v7 = true;
             } catch (ClassNotFoundException ex) {
                 try {
                     // if this class exists, we're on 6.2
@@ -73,8 +65,6 @@ public class WorldGuardRegionHandler {
                             .getDeclaredMethod("getRegionManager", org.bukkit.World.class);
                     legacy_getApplicableRegions_Region = RegionManager.class.getDeclaredMethod("getApplicableRegions",
                             Class.forName("com.sk89q.worldguard.protection.regions.ProtectedRegion"));
-                    legacy_getApplicableRegions_Location = RegionManager.class.getDeclaredMethod("getApplicableRegions",
-                            Location.class);
                     legacy_blockVectorClazz = Class.forName("com.sk89q.worldedit.BlockVector");
                     legacy_newblockVector = legacy_blockVectorClazz.getConstructor(int.class, int.class, int.class);
                     legacy_newProtectedCuboidRegion = Class.forName("com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion")
@@ -89,51 +79,6 @@ public class WorldGuardRegionHandler {
                 wgPlugin = false;
             }
         }
-    }
-
-    public static List<String> getRegionNames(Chunk c) {
-        if (worldGuardPlugin == null) {
-            init();
-        }
-
-        if (!wgPlugin || c == null) {
-            return Collections.emptyList();
-        }
-
-        if (legacy_v62 || legacy_v60 || legacy_v5) {
-            return getRegionNamesLegacy(c);
-        }
-
-        RegionManager worldManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(c.getWorld()));
-
-        if (worldManager == null) {
-            return Collections.emptyList();
-        }
-
-        ProtectedCuboidRegion chunkRegion = new ProtectedCuboidRegion("__TEST__",
-                BlockVector3.at(c.getX() << 4, c.getWorld().getMaxHeight(), c.getZ() << 4),
-                BlockVector3.at((c.getX() << 4) + 15, 0, (c.getZ() << 4) + 15));
-        ApplicableRegionSet set = worldManager.getApplicableRegions(chunkRegion);
-
-        List<String> regions = new ArrayList<>();
-        List<String> parentNames = new ArrayList<>();
-
-        for (ProtectedRegion region : set) {
-            String id = region.getId();
-
-            regions.add(id);
-
-            ProtectedRegion parent = region.getParent();
-
-            while (parent != null) {
-                parentNames.add(parent.getId());
-                parent = parent.getParent();
-            }
-        }
-
-        regions.removeAll(parentNames);
-
-        return regions;
     }
 
     private static List<String> getRegionNamesLegacy(Chunk c) {
@@ -178,47 +123,6 @@ public class WorldGuardRegionHandler {
         }
 
         return Collections.emptyList();
-    }
-
-    public static List<String> getRegionNames(Location loc) {
-        if (worldGuardPlugin == null) {
-            init();
-        }
-
-        if (!wgPlugin || loc == null) {
-            return Collections.emptyList();
-        }
-
-        if (legacy_v62 || legacy_v60 || legacy_v5) {
-            return getRegionNamesLegacy(loc);
-        }
-
-        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(loc.getWorld()));
-
-        if (regionManager == null) {
-            return Collections.emptyList();
-        }
-
-        List<String> regions = new ArrayList<>();
-        List<String> parentNames = new ArrayList<>();
-        ApplicableRegionSet set = regionManager.getApplicableRegions(BukkitAdapter.asBlockVector(loc));
-
-        for (ProtectedRegion region : set) {
-            String id = region.getId();
-
-            regions.add(id);
-
-            ProtectedRegion parent = region.getParent();
-
-            while (parent != null) {
-                parentNames.add(parent.getId());
-                parent = parent.getParent();
-            }
-        }
-
-        regions.removeAll(parentNames);
-
-        return regions;
     }
 
     private static List<String> getRegionNamesLegacy(Location loc) {

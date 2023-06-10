@@ -154,142 +154,6 @@ public class Config extends ConfigSection {
         return file;
     }
 
-    public Charset getDefaultCharset() {
-        return defaultCharset;
-    }
-
-    /**
-     * Set the Charset that will be used to save this config
-     *
-     * @param defaultCharset Charset to use
-     * @return this class
-     */
-    public Config setDefaultCharset(Charset defaultCharset) {
-        this.defaultCharset = defaultCharset;
-        return this;
-    }
-
-    /**
-     * Set the default charset to use UTF-16
-     *
-     * @return this class
-     */
-    public Config setUseUTF16() {
-        this.defaultCharset = StandardCharsets.UTF_16;
-        return this;
-    }
-
-    public boolean getLoadComments() {
-        return loadComments;
-    }
-
-    /**
-     * Should comments from the config file be loaded when loading?
-     *
-     * @param loadComments set to false if you do not want to preserve node comments
-     */
-    public void setLoadComments(boolean loadComments) {
-        this.loadComments = loadComments;
-    }
-
-    public boolean getAutosave() {
-        return autosave;
-    }
-
-    /**
-     * Should the configuration automatically save whenever it's been changed? <br>
-     * All saves are done asynchronously, so this should not impact server performance.
-     *
-     * @param autosave set to true if autosaving is enabled.
-     * @return this class
-     */
-    @NotNull
-    public Config setAutosave(boolean autosave) {
-        this.autosave = autosave;
-        return this;
-    }
-
-    public int getAutosaveInterval() {
-        return autosaveInterval;
-    }
-
-    /**
-     * If autosave is enabled, this is the delay between a change and when the save is started. <br>
-     * If the configuration is changed within this period, the timer is not reset.
-     *
-     * @param autosaveInterval time in seconds
-     * @return this class
-     */
-    @NotNull
-    public Config setAutosaveInterval(int autosaveInterval) {
-        this.autosaveInterval = autosaveInterval;
-        return this;
-    }
-
-    public boolean getAutoremove() {
-        return autoremove;
-    }
-
-    /**
-     * This setting is used to prevent users to from adding extraneous settings
-     * to the config and to remove deprecated settings. <br>
-     * If this is enabled, the config will delete any nodes that are not defined
-     * as a default setting.
-     *
-     * @param autoremove Remove settings that don't exist as defaults
-     * @return this class
-     */
-    @NotNull
-    public Config setAutoremove(boolean autoremove) {
-        this.autoremove = autoremove;
-        return this;
-    }
-
-    /**
-     * Default comment applied to config nodes
-     */
-    @Nullable
-    public ConfigFormattingRules.CommentStyle getDefaultNodeCommentFormat() {
-        return defaultNodeCommentFormat;
-    }
-
-    /**
-     * Default comment applied to config nodes
-     *
-     * @return this config
-     */
-    @NotNull
-    public Config setDefaultNodeCommentFormat(@Nullable ConfigFormattingRules.CommentStyle defaultNodeCommentFormat) {
-        this.defaultNodeCommentFormat = defaultNodeCommentFormat;
-        return this;
-    }
-
-    /**
-     * Default comment applied to section nodes
-     */
-    @Nullable
-    public ConfigFormattingRules.CommentStyle getDefaultSectionCommentFormat() {
-        return defaultSectionCommentFormat;
-    }
-
-    /**
-     * Default comment applied to section nodes
-     *
-     * @return this config
-     */
-    @NotNull
-    public Config setDefaultSectionCommentFormat(@Nullable ConfigFormattingRules.CommentStyle defaultSectionCommentFormat) {
-        this.defaultSectionCommentFormat = defaultSectionCommentFormat;
-        return this;
-    }
-
-    /**
-     * Extra lines to put between root nodes
-     */
-    public int getRootNodeSpacing() {
-        return rootNodeSpacing;
-    }
-
     /**
      * Extra lines to put between root nodes
      *
@@ -298,48 +162,6 @@ public class Config extends ConfigSection {
     @NotNull
     public Config setRootNodeSpacing(int rootNodeSpacing) {
         this.rootNodeSpacing = rootNodeSpacing;
-        return this;
-    }
-
-    /**
-     * Extra lines to put in front of comments. <br>
-     * This is separate from rootNodeSpacing, if applicable.
-     */
-    public int getCommentSpacing() {
-        return commentSpacing;
-    }
-
-    /**
-     * Extra lines to put in front of comments. <br>
-     * This is separate from rootNodeSpacing, if applicable.
-     *
-     * @return this config
-     */
-    @NotNull
-    public Config setCommentSpacing(int commentSpacing) {
-        this.commentSpacing = commentSpacing;
-        return this;
-    }
-
-    @NotNull
-    public Config setHeader(@Nullable ConfigFormattingRules.CommentStyle commentStyle, @NotNull String... description) {
-        if (description.length == 0) {
-            headerComment = null;
-        } else {
-            headerComment = new Comment(commentStyle, description);
-        }
-
-        return this;
-    }
-
-    @NotNull
-    public Config setHeader(@Nullable ConfigFormattingRules.CommentStyle commentStyle, @Nullable List<String> description) {
-        if (description == null || description.isEmpty()) {
-            headerComment = null;
-        } else {
-            headerComment = new Comment(commentStyle, description);
-        }
-
         return this;
     }
 
@@ -370,25 +192,6 @@ public class Config extends ConfigSection {
         } else {
             headerComment = new Comment(description);
         }
-
-        return this;
-    }
-
-    public Config clearConfig(boolean clearDefaults) {
-        root.values.clear();
-        root.configComments.clear();
-
-        if (clearDefaults) {
-            root.defaultComments.clear();
-            root.defaults.clear();
-        }
-
-        return this;
-    }
-
-    public Config clearDefaults() {
-        root.defaultComments.clear();
-        root.defaults.clear();
 
         return this;
     }
@@ -609,11 +412,6 @@ public class Config extends ConfigSection {
         }
 
         return save(getFile());
-    }
-
-    public boolean save(@NotNull String file) {
-        Validate.notNull(file, "File cannot be null");
-        return this.save(new File(file));
     }
 
     public boolean save(@NotNull File file) {

@@ -1,7 +1,6 @@
 package com.songoda.core.hooks;
 
 import com.songoda.core.hooks.log.Log;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 
@@ -19,51 +18,6 @@ public class LogManager {
         manager.load();
     }
 
-    public static HookManager getManager() {
-        return manager;
-    }
-
-    /**
-     * Grab the default log plugin. <br />
-     * NOTE: using a default log assumes that this library is shaded
-     *
-     * @return returns null if no plugin enabled
-     */
-    public static Log getLog() {
-        return manager.getCurrentHook();
-    }
-
-    /**
-     * Check to see if there is a default log loaded. <br />
-     * NOTE: using a default log assumes that this library is shaded
-     *
-     * @return returns false if there are no supported log plugins
-     */
-    public static boolean isEnabled() {
-        return manager.isEnabled();
-    }
-
-    /**
-     * Get the name of the log plugin being used. <br />
-     * NOTE: using a default log assumes that this library is shaded
-     */
-    public static String getName() {
-        return manager.getName();
-    }
-
-    /**
-     * Log the placement of a block. <br />
-     * NOTE: using a default log assumes that this library is shaded
-     *
-     * @param player player to commit action
-     * @param block  the block that is placed
-     */
-    public static void logPlacement(OfflinePlayer player, Block block) {
-        if (manager.isEnabled()) {
-            manager.getCurrentHook().logPlacement(player, block);
-        }
-    }
-
     /**
      * Log the removal of a block. <br />
      * NOTE: using a default log assumes that this library is shaded
@@ -76,16 +30,4 @@ public class LogManager {
         }
     }
 
-    /**
-     * Log a player interaction. <br />
-     * NOTE: using a default log assumes that this library is shaded
-     *
-     * @param player   player to commit action
-     * @param location the location that is interacted with
-     */
-    public static void logInteraction(OfflinePlayer player, Location location) {
-        if (manager.isEnabled()) {
-            manager.getCurrentHook().logInteraction(player, location);
-        }
-    }
 }

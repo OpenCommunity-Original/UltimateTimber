@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class MainCommand extends AbstractCommand {
     protected final SimpleNestedCommand nestedCommands;
     final String command;
-    final Plugin plugin;
     String header = null;
     String description;
     boolean sortHelp = false;
@@ -22,7 +21,6 @@ public class MainCommand extends AbstractCommand {
         super(CommandType.CONSOLE_OK, command);
 
         this.command = command;
-        this.plugin = plugin;
         this.description = "Shows the command help page for /" + command;
         this.nestedCommands = new SimpleNestedCommand(this);
     }
@@ -93,8 +91,4 @@ public class MainCommand extends AbstractCommand {
         return description;
     }
 
-    public MainCommand setDescription(String description) {
-        this.description = description;
-        return this;
-    }
 }

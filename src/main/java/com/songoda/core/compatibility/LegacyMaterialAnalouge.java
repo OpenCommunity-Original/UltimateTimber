@@ -748,8 +748,6 @@ public enum LegacyMaterialAnalouge {
 
     final ServerVersion versionLessThan;
     final String modernMaterial;
-    final String legacyMaterial;
-    final Byte legacyData;
     final ServerVersion legacyMinimumVersion;
     final String compatibleMaterial;
     final Byte compatibleData;
@@ -797,8 +795,6 @@ public enum LegacyMaterialAnalouge {
     LegacyMaterialAnalouge(ServerVersion versionLessThan, String modernAnalouge, String legacyMaterial, Byte legacyData, ServerVersion legacyMinimum, String compatMaterial, Byte compatData) {
         this.versionLessThan = versionLessThan;
         this.modernMaterial = modernAnalouge;
-        this.legacyMaterial = legacyMaterial;
-        this.legacyData = legacyData;
 
         this.legacyMinimumVersion = legacyMinimum;
         this.compatibleMaterial = compatMaterial;
@@ -825,18 +821,6 @@ public enum LegacyMaterialAnalouge {
 
     public static LegacyMaterialAnalouge lookupAnalouge(String material) {
         return lookupMap.get(material);
-    }
-
-    public Material getMaterial() {
-        return material;
-    }
-
-    public boolean usesData() {
-        return data != null;
-    }
-
-    public byte getData() {
-        return data == null ? 0 : data;
     }
 
     public ItemStack getItem() {

@@ -8,7 +8,6 @@ import com.songoda.core.core.PluginInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -38,19 +37,14 @@ public class SongodaCore {
      */
     private final static String coreVersion = "2.6.16";
 
-    /**
-     * This is specific to the website api
-     */
-    private final static int updaterVersion = 1;
-
     private final static Set<PluginInfo> registeredPlugins = new HashSet<>();
 
     private static SongodaCore INSTANCE = null;
+    private final ArrayList<BukkitTask> tasks = new ArrayList<>();
     private JavaPlugin piggybackedPlugin;
-    private CommandManager commandManager;
+    private final CommandManager commandManager;
     private EventListener loginListener;
     private ShadedEventListener shadingListener;
-    private final ArrayList<BukkitTask> tasks = new ArrayList<>();
 
     SongodaCore() {
         commandManager = null;
@@ -64,10 +58,6 @@ public class SongodaCore {
 
     public static void registerPlugin(JavaPlugin plugin, int pluginID, CompatibleMaterial icon) {
         registerPlugin(plugin, pluginID, icon == null ? "STONE" : icon.name(), coreVersion);
-    }
-
-    public static void registerPlugin(JavaPlugin plugin, int pluginID, String icon) {
-        registerPlugin(plugin, pluginID, icon, "?");
     }
 
     public static void registerPlugin(JavaPlugin plugin, int pluginID, String icon, String coreVersion) {
@@ -160,28 +150,12 @@ public class SongodaCore {
         return coreVersion;
     }
 
-    public static int getUpdaterVersion() {
-        return updaterVersion;
-    }
-
     public static String getPrefix() {
         return "[SongodaCore] ";
     }
 
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public static boolean isRegistered(String plugin) {
-        return registeredPlugins.stream().anyMatch(p -> p.getJavaPlugin().getName().equalsIgnoreCase(plugin));
-    }
-
     public static JavaPlugin getHijackedPlugin() {
         return INSTANCE == null ? null : INSTANCE.piggybackedPlugin;
-    }
-
-    public static SongodaCore getInstance() {
-        return INSTANCE;
     }
 
     private void init() {
@@ -201,22 +175,6 @@ public class SongodaCore {
                 20 * 60 * 2));
     }
 
-    /**
-     * Used to yield this core to a newer core
-     */
-    private void destroy() {
-        Bukkit.getServicesManager().unregister(SongodaCore.class, INSTANCE);
-
-        tasks.stream().filter(Objects::nonNull)
-                .forEach(task -> Bukkit.getScheduler().cancelTask(task.getTaskId()));
-
-        HandlerList.unregisterAll(loginListener);
-
-        registeredPlugins.clear();
-        commandManager = null;
-        loginListener = null;
-    }
-
     private void register(JavaPlugin plugin, int pluginID, String icon, String libraryVersion) {
         logger.info(getPrefix() + "Hooked " + plugin.getName() + ".");
         PluginInfo info = new PluginInfo(plugin, pluginID, icon, libraryVersion);
@@ -228,7 +186,6 @@ public class SongodaCore {
 
     private static class ShadedEventListener implements Listener {
         boolean via;
-        boolean proto = false;
 
         ShadedEventListener() {
             via = Bukkit.getPluginManager().isPluginEnabled("ViaVersion");
@@ -280,13 +237,6 @@ public class SongodaCore {
 
             // is this player good to revieve update notices?
             if (!event.getPlayer().isOp() && !player.hasPermission("songoda.updatecheck")) return;
-
-            // check for updates! ;)
-            for (PluginInfo plugin : getPlugins()) {
-                if (plugin.getNotification() != null && plugin.getJavaPlugin().isEnabled())
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin.getJavaPlugin(), () ->
-                            player.sendMessage("[" + plugin.getJavaPlugin().getName() + "] " + plugin.getNotification()), 10L);
-            }
         }
 
         @EventHandler

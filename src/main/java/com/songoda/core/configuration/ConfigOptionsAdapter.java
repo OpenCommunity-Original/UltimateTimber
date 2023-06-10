@@ -14,10 +14,6 @@ public class ConfigOptionsAdapter extends FileConfigurationOptions {
         this.config = config;
     }
 
-    public Config getConfig() {
-        return (Config) config.root;
-    }
-
     @NotNull
     @Override
     public ConfigFileConfigurationAdapter configuration() {
@@ -60,13 +56,4 @@ public class ConfigOptionsAdapter extends FileConfigurationOptions {
         return this;
     }
 
-    public int indent() {
-        return config.root.getIndent();
-    }
-
-    @NotNull
-    public ConfigOptionsAdapter indent(int value) {
-        config.root.setIndent(value);
-        return this;
-    }
 }

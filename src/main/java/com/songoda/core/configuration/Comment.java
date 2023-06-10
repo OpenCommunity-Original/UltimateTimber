@@ -17,9 +17,6 @@ public class Comment {
     final List<String> lines = new ArrayList<>();
     CommentStyle commentStyle = null;
 
-    public Comment() {
-    }
-
     public Comment(String... lines) {
         this(null, Arrays.asList(lines));
     }
@@ -52,10 +49,6 @@ public class Comment {
 
     public CommentStyle getCommentStyle() {
         return commentStyle;
-    }
-
-    public void setCommentStyle(CommentStyle commentStyle) {
-        this.commentStyle = commentStyle;
     }
 
     public List<String> getLines() {

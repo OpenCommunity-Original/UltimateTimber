@@ -41,19 +41,6 @@ public enum CompatibleHand {
         return MAIN_HAND;
     }
 
-    public static CompatibleHand getHand(EquipmentSlot equipmentSlot) {
-        return equipmentSlot == EquipmentSlot.HAND ? MAIN_HAND : OFF_HAND;
-    }
-
-    /**
-     * Use up whatever item the player is holding in their main hand
-     *
-     * @param player player to grab item from
-     */
-    public void takeItem(Player player) {
-        takeItem(player, 1);
-    }
-
     /**
      * Use up whatever item the player is holding in their main hand
      *
@@ -89,18 +76,4 @@ public enum CompatibleHand {
         return player.getInventory().getItemInOffHand();
     }
 
-    /**
-     * Set the item in the selected hand
-     *
-     * @param player the player to set the item of
-     * @param item   the item to set
-     */
-    public void setItem(Player player, ItemStack item) {
-        if (this == MAIN_HAND) {
-            player.setItemInHand(item);
-            return;
-        }
-
-        player.getInventory().setItemInOffHand(item);
-    }
 }

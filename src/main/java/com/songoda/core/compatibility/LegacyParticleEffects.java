@@ -67,14 +67,6 @@ public class LegacyParticleEffects {
         createParticle(l, e, 0F, 0F, 0F, 1, 0, null);
     }
 
-    public static void createParticle(Location l, Type e, List<Player> localOnly) {
-        createParticle(l, e, 0F, 0F, 0F, 1, 0, localOnly);
-    }
-
-    public static void createParticle(Location l, Type e, float effectSpeed, int amountOfParticles) {
-        createParticle(l, e, 0F, 0F, 0F, effectSpeed, amountOfParticles, null);
-    }
-
     /**
      * @param l                 exact location to spawn the particle
      * @param e                 particle effect type
@@ -180,52 +172,7 @@ public class LegacyParticleEffects {
     // FIXME: Remove this method on next major release
 
     public enum Type {
-        EXPLOSION_NORMAL("explode"),
-        EXPLOSION_LARGE("largeexplode"),
-        EXPLOSION_HUGE("hugeexplosion"),
-        FIREWORKS_SPARK("fireworksSpark"),
-        WATER_BUBBLE("bubble"),
-        WATER_SPLASH("splash"),
-        WATER_WAKE("wake", ServerVersion.V1_8),
-        SUSPENDED("suspended"),
-        SUSPENDED_DEPTH("depthsuspend"),
-        CRIT("crit"),
-        CRIT_MAGIC("magicCrit"),
-        SMOKE_NORMAL("smoke"),
-        SMOKE_LARGE("largesmoke"),
-        SPELL("spell"),
-        SPELL_INSTANT("instantSpell"),
-        SPELL_MOB("mobSpell"),
-        SPELL_MOB_AMBIENT("mobSpellAmbient"),
-        SPELL_WITCH("witchMagic"),
-        DRIP_WATER("dripWater"),
-        DRIP_LAVA("dripLava"),
-        VILLAGER_ANGRY("angryVillager"),
-        VILLAGER_HAPPY("happyVillager"),
-        TOWN_AURA("townaura"),
-        NOTE("note"),
-        PORTAL("portal"),
-        ENCHANTMENT_TABLE("enchantmenttable"),
-        FLAME("flame"),
-        LAVA("lava"),
-        FOOTSTEP("footstep"),
-        CLOUD("cloud"),
-        REDSTONE("reddust"),
-        SNOWBALL("snowballpoof"),
-        SNOW_SHOVEL("snowshovel"),
-        SLIME("slime"),
-        HEART("heart"),
-        BARRIER("barrier", ServerVersion.V1_8),
-        /**
-         * Used when a block is broken
-         */
-        ITEM_CRACK("iconcrack_"),
-        BLOCK_CRACK("blockcrack_", ServerVersion.V1_8),
-        BLOCK_DUST("blockdust_", ServerVersion.V1_8),
-        WATER_DROP("droplet", ServerVersion.V1_8),
-        ITEM_TAKE("take", ServerVersion.V1_8),
-        MOB_APPEARANCE("mobappearance", ServerVersion.V1_8),
-        TOOL_BREAK("tilecrack_", ServerVersion.UNKNOWN, ServerVersion.V1_7);
+        REDSTONE("reddust");
 
         public final String name;
         public final ServerVersion minVersion;
@@ -249,13 +196,5 @@ public class LegacyParticleEffects {
             this.maxVersion = maxVersion;
         }
 
-        public static Type getById(String id) {
-            for (Type t : Type.values()) {
-                if (t.name.equalsIgnoreCase(id) || t.name().equalsIgnoreCase(id)) {
-                    return t;
-                }
-            }
-            return null;
-        }
     }
 }

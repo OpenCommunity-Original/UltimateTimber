@@ -8,14 +8,8 @@ import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.core.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -26,10 +20,6 @@ public class ChatMessage {
     private static final Gson gson = new GsonBuilder().create();
     private static boolean enabled = ServerVersion.isServerVersionAtLeast(ServerVersion.V1_8);
     private static Class<?> mc_ChatMessageType;
-    private static Method mc_IChatBaseComponent_ChatSerializer_a, cb_craftPlayer_getHandle;
-    private static Constructor mc_PacketPlayOutChat_new;
-    private static Field mc_entityPlayer_playerConnection, mc_chatMessageType_Chat;
-    private static boolean mc_PacketPlayOutChat_new_1_19_0 = false;
 
     static {
         init();
@@ -40,42 +30,12 @@ public class ChatMessage {
     static void init() {
         if (enabled) {
             try {
-                final String version = ServerVersion.getServerVersionString();
-                Class<?> cb_craftPlayerClazz, mc_entityPlayerClazz,
-                        mc_IChatBaseComponent, mc_IChatBaseComponent_ChatSerializer, mc_PacketPlayOutChat;
-
-                cb_craftPlayerClazz = ClassMapping.CRAFT_PLAYER.getClazz();
-                cb_craftPlayer_getHandle = cb_craftPlayerClazz.getDeclaredMethod("getHandle");
-                mc_entityPlayerClazz = ClassMapping.ENTITY_PLAYER.getClazz();
-                mc_entityPlayer_playerConnection = mc_entityPlayerClazz.getDeclaredField(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_17) ? "b" : "playerConnection");
-                mc_IChatBaseComponent = ClassMapping.I_CHAT_BASE_COMPONENT.getClazz();
-                mc_IChatBaseComponent_ChatSerializer = ClassMapping.I_CHAT_BASE_COMPONENT.getClazz("ChatSerializer");
-                mc_IChatBaseComponent_ChatSerializer_a = mc_IChatBaseComponent_ChatSerializer.getMethod("a", String.class);
-                mc_PacketPlayOutChat = ServerVersion.isServerVersionAtLeast(ServerVersion.V1_19) ? ClassMapping.CLIENTBOUND_SYSTEM_CHAT.getClazz() : ClassMapping.PACKET_PLAY_OUT_CHAT.getClazz();
-
-                if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_19)) {
-                    try {
-                        mc_PacketPlayOutChat_new = mc_PacketPlayOutChat.getConstructor(mc_IChatBaseComponent, Boolean.TYPE);
-                    } catch (NoSuchMethodException ex) {
-                        mc_PacketPlayOutChat_new = mc_PacketPlayOutChat.getConstructor(mc_IChatBaseComponent, Integer.TYPE);
-                        mc_PacketPlayOutChat_new_1_19_0 = true;
-                    }
-                } else if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_16)) {
-                    mc_ChatMessageType = ClassMapping.CHAT_MESSAGE_TYPE.getClazz();
-                    mc_chatMessageType_Chat = mc_ChatMessageType.getField(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_17) ? "a" : "CHAT");
-                    mc_PacketPlayOutChat_new = mc_PacketPlayOutChat.getConstructor(mc_IChatBaseComponent, mc_ChatMessageType, UUID.class);
-                } else {
-                    mc_PacketPlayOutChat_new = mc_PacketPlayOutChat.getConstructor(mc_IChatBaseComponent);
-                }
+                mc_ChatMessageType = ClassMapping.CHAT_MESSAGE_TYPE.getClazz();
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "Problem preparing raw chat packets (disabling further packets)", ex);
                 enabled = false;
             }
         }
-    }
-
-    public void clear() {
-        textList.clear();
     }
 
     public ChatMessage fromText(String text) {
@@ -181,10 +141,6 @@ public class ChatMessage {
         return this;
     }
 
-    public ChatMessage addMessage(String text, ColorContainer color) {
-        return addMessage(text, color, Collections.emptyList());
-    }
-
     public ChatMessage addMessage(String text, ColorContainer color, List<ColorCode> colorCodes) {
         JsonObject txt = new JsonObject();
         txt.addProperty("text", text);
@@ -203,24 +159,6 @@ public class ChatMessage {
         return this;
     }
 
-    public ChatMessage addRunCommand(String text, String hoverText, String cmd) {
-        JsonObject txt = new JsonObject();
-        txt.addProperty("text", text);
-
-        JsonObject hover = new JsonObject();
-        hover.addProperty("action", "show_text");
-        hover.addProperty("value", hoverText);
-        txt.add("hoverEvent", hover);
-
-        JsonObject click = new JsonObject();
-        click.addProperty("action", "run_command");
-        click.addProperty("value", cmd);
-        txt.add("clickEvent", click);
-
-        textList.add(txt);
-        return this;
-    }
-
     public ChatMessage addPromptCommand(String text, String hoverText, String cmd) {
         JsonObject txt = new JsonObject();
         txt.addProperty("text", text);
@@ -234,24 +172,6 @@ public class ChatMessage {
         click.addProperty("action", "suggest_command");
         click.addProperty("value", cmd);
         txt.add("clickEvent", click);
-
-        textList.add(txt);
-        return this;
-    }
-
-    public ChatMessage addURL(String text, String hoverText, String url) {
-        JsonObject txt = new JsonObject();
-        txt.addProperty("text", text);
-
-        JsonObject hover = new JsonObject();
-        hover.addProperty("action", "show_text");
-        hover.addProperty("value", hoverText);
-        txt.add("hoverEvent", hover);
-
-        JsonObject click = new JsonObject();
-        click.addProperty("action", "open_url");
-        click.addProperty("value", url);
-        txt.add("clickEvent", hover);
 
         textList.add(txt);
         return this;
@@ -295,14 +215,4 @@ public class ChatMessage {
         sender.sendMessage(TextUtils.formatText((prefix == null ? "" : prefix.toText(true) + " ") + toText(true)));
     }
 
-    public ChatMessage replaceAll(String toReplace, String replaceWith) {
-        for (JsonObject object : textList) {
-            String text = object.get("text").getAsString().replaceAll(toReplace, replaceWith);
-
-            object.remove("text");
-            object.addProperty("text", text);
-        }
-
-        return this;
-    }
 }

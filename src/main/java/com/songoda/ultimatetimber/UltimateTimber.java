@@ -3,7 +3,6 @@ package com.songoda.ultimatetimber;
 import com.songoda.core.SongodaCore;
 import com.songoda.core.SongodaPlugin;
 import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.configuration.Config;
 import com.songoda.core.hooks.LogManager;
 import com.songoda.ultimatetimber.commands.CommandGiveAxe;
 import com.songoda.ultimatetimber.commands.CommandReload;
@@ -13,7 +12,6 @@ import com.songoda.ultimatetimber.utils.LocaleAPI;
 import org.bukkit.Bukkit;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class UltimateTimber extends SongodaPlugin {
@@ -90,12 +88,6 @@ public class UltimateTimber extends SongodaPlugin {
     public void onConfigReload() {
         this.configurationManager.reload();
         this.managers.forEach(Manager::reload);
-        this.setLocale(getConfig().getString("locale"), true);
-    }
-
-    @Override
-    public List<Config> getExtraConfig() {
-        return null;
     }
 
     /**

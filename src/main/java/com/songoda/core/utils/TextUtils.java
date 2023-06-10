@@ -12,7 +12,6 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,107 +58,7 @@ public class TextUtils {
                 .collect(Collectors.toList());
     }
 
-    public static List<String> formatText(String... list) {
-        return Arrays.stream(list)
-                .map(TextUtils::formatText)
-                .collect(Collectors.toList());
-    }
-
-    public static List<String> wrap(String line) {
-        return wrap(null, line);
-    }
-
-    // TODO: We might want to remove white spaces at the beginning after wrapping a substring into a new line
-    // TODO: Why do we accept a String as a color when we need it in a very specific format?!
-    public static List<String> wrap(String color, String line) {
-        if (color != null) {
-            color = "&" + color;
-        } else {
-            color = "";
-        }
-
-        List<String> lore = new ArrayList<>();
-        int lastIndex = 0;
-        for (int n = 0; n < line.length(); ++n) {
-            if (n - lastIndex < 25) {
-                continue;
-            }
-
-            if (line.charAt(n) == ' ') {
-                lore.add(TextUtils.formatText(color + TextUtils.formatText(line.substring(lastIndex, n))));
-                lastIndex = n;
-            }
-        }
-
-        if (lastIndex - line.length() < 25) {
-            lore.add(TextUtils.formatText(color + TextUtils.formatText(line.substring(lastIndex))));
-        }
-
-        return lore;
-    }
-
-    /**
-     * Convert a string to an invisible colored string that's lore-safe <br />
-     * (Safe to use as lore) <br />
-     * Note: Do not use semi-colons or § in this string, or they will be lost when decoding!
-     *
-     * @param s string to convert
-     * @return encoded string
-     */
-    public static String convertToInvisibleLoreString(String s) {
-        if (s == null || s.equals("")) {
-            return "";
-        }
-
-        StringBuilder hidden = new StringBuilder();
-
-        for (char c : s.toCharArray()) {
-            hidden.append(ChatColor.COLOR_CHAR)
-                    .append(';')
-                    .append(ChatColor.COLOR_CHAR)
-                    .append(c);
-        }
-
-        return hidden.toString();
-    }
-
-    /**
-     * Convert a string to an invisible colored string <br />
-     * (Not safe to use as lore) <br />
-     * Note: Do not use semi-colons or § in this string, or they will be lost when decoding!
-     *
-     * @param s string to convert
-     * @return encoded string
-     */
-    public static String convertToInvisibleString(String s) {
-        if (s == null || s.equals("")) {
-            return "";
-        }
-
-        StringBuilder hidden = new StringBuilder();
-        for (char c : s.toCharArray()) {
-            hidden.append(ChatColor.COLOR_CHAR)
-                    .append(c);
-        }
-
-        return hidden.toString();
-    }
-
     // TODO: Is there a more reliable way?
-
-    /**
-     * Removes color markers used to encode strings as invisible text
-     *
-     * @param s encoded string
-     * @return string with color markers removed
-     */
-    public static String convertFromInvisibleString(String s) {
-        if (s == null || s.equals("")) {
-            return "";
-        }
-
-        return s.replaceAll(ChatColor.COLOR_CHAR + ";" + ChatColor.COLOR_CHAR + "|" + ChatColor.COLOR_CHAR, "");
-    }
 
     public static Charset detectCharset(File f, Charset def) {
         byte[] buffer = new byte[2048];

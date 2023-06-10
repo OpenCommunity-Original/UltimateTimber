@@ -38,12 +38,10 @@ public enum ColorCode {
     }
 
     private final char code;
-    private final ChatColor chatColor;
     private final boolean isColor;
 
     ColorCode(char code, ChatColor chatColor, boolean isColor) {
         this.code = code;
-        this.chatColor = chatColor;
         this.isColor = isColor;
     }
 
@@ -53,10 +51,6 @@ public enum ColorCode {
 
     public char getCode() {
         return code;
-    }
-
-    public ChatColor getChatColor() {
-        return chatColor;
     }
 
     public boolean isColor() {

@@ -1,6 +1,5 @@
 package com.songoda.core.configuration;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -53,22 +52,10 @@ public class ConfigSection extends MemoryConfiguration {
         values = null;
     }
 
-    public int getIndent() {
-        return root.indentation;
-    }
-
-    public void setIndent(int indentation) {
-        root.indentation = indentation;
-    }
-
     protected void onChange() {
         if (parent != null) {
             root.onChange();
         }
-    }
-
-    public char getPathSeparator() {
-        return root.pathChar;
     }
 
     /**
@@ -83,13 +70,6 @@ public class ConfigSection extends MemoryConfiguration {
         }
 
         root.pathChar = pathChar;
-    }
-
-    /**
-     * @return The full key for this section node
-     */
-    public String getKey() {
-        return !fullPath.endsWith(String.valueOf(root.pathChar)) ? fullPath : fullPath.substring(0, fullPath.length() - 1);
     }
 
     /**
@@ -126,44 +106,6 @@ public class ConfigSection extends MemoryConfiguration {
                 }
             }
         }
-    }
-
-    @NotNull
-    public ConfigSection createDefaultSection(@NotNull String path) {
-        createNodePath(path, true);
-        ConfigSection section = new ConfigSection(root, this, path, true);
-
-        synchronized (root.lock) {
-            root.defaults.put(fullPath + path, section);
-        }
-
-        return section;
-    }
-
-    @NotNull
-    public ConfigSection createDefaultSection(@NotNull String path, String... comment) {
-        createNodePath(path, true);
-        ConfigSection section = new ConfigSection(root, this, path, true);
-
-        synchronized (root.lock) {
-            root.defaults.put(fullPath + path, section);
-            root.defaultComments.put(fullPath + path, new Comment(comment));
-        }
-
-        return section;
-    }
-
-    @NotNull
-    public ConfigSection createDefaultSection(@NotNull String path, ConfigFormattingRules.CommentStyle commentStyle, String... comment) {
-        createNodePath(path, true);
-        ConfigSection section = new ConfigSection(root, this, path, true);
-
-        synchronized (root.lock) {
-            root.defaults.put(fullPath + path, section);
-            root.defaultComments.put(fullPath + path, new Comment(commentStyle, comment));
-        }
-
-        return section;
     }
 
     @NotNull
@@ -217,15 +159,6 @@ public class ConfigSection extends MemoryConfiguration {
         return this;
     }
 
-    @NotNull
-    public ConfigSection setDefaultComment(@NotNull String path, @Nullable Comment comment) {
-        synchronized (root.lock) {
-            root.defaultComments.put(fullPath + path, comment);
-        }
-
-        return this;
-    }
-
     @Nullable
     public Comment getComment(@NotNull String path) {
         Comment result = root.configComments.get(fullPath + path);
@@ -235,17 +168,6 @@ public class ConfigSection extends MemoryConfiguration {
         }
 
         return result;
-    }
-
-    @Nullable
-    public String getCommentString(@NotNull String path) {
-        Comment result = root.configComments.get(fullPath + path);
-
-        if (result == null) {
-            result = root.defaultComments.get(fullPath + path);
-        }
-
-        return result != null ? result.toString() : null;
     }
 
     @Override
@@ -480,57 +402,9 @@ public class ConfigSection extends MemoryConfiguration {
     }
 
     @NotNull
-    public ConfigSection set(@NotNull String path, @Nullable Object value, String... comment) {
-        set(path, value);
-        return setComment(path, null, comment);
-    }
-
-    @NotNull
-    public ConfigSection set(@NotNull String path, @Nullable Object value, List<String> comment) {
-        set(path, value);
-        return setComment(path, null, comment);
-    }
-
-    @NotNull
-    public ConfigSection set(@NotNull String path, @Nullable Object value, @Nullable ConfigFormattingRules.CommentStyle commentStyle, String... comment) {
-        set(path, value);
-        return setComment(path, commentStyle, comment);
-    }
-
-    @NotNull
-    public ConfigSection set(@NotNull String path, @Nullable Object value, @Nullable ConfigFormattingRules.CommentStyle commentStyle, List<String> comment) {
-        set(path, value);
-        return setComment(path, commentStyle, comment);
-    }
-
-    @NotNull
-    public ConfigSection setDefault(@NotNull String path, @Nullable Object value) {
-        addDefault(path, value);
-        return this;
-    }
-
-    @NotNull
     public ConfigSection setDefault(@NotNull String path, @Nullable Object value, String... comment) {
         addDefault(path, value);
         return setDefaultComment(path, comment);
-    }
-
-    @NotNull
-    public ConfigSection setDefault(@NotNull String path, @Nullable Object value, List<String> comment) {
-        addDefault(path, value);
-        return setDefaultComment(path, comment);
-    }
-
-    @NotNull
-    public ConfigSection setDefault(@NotNull String path, @Nullable Object value, ConfigFormattingRules.CommentStyle commentStyle, String... comment) {
-        addDefault(path, value);
-        return setDefaultComment(path, commentStyle, comment);
-    }
-
-    @NotNull
-    public ConfigSection setDefault(@NotNull String path, @Nullable Object value, ConfigFormattingRules.CommentStyle commentStyle, List<String> comment) {
-        addDefault(path, value);
-        return setDefaultComment(path, commentStyle, comment);
     }
 
     @NotNull
@@ -547,21 +421,6 @@ public class ConfigSection extends MemoryConfiguration {
         onChange();
 
         return section;
-    }
-
-    @NotNull
-    public ConfigSection createSection(@NotNull String path, String... comment) {
-        return createSection(path, null, comment.length == 0 ? null : Arrays.asList(comment));
-    }
-
-    @NotNull
-    public ConfigSection createSection(@NotNull String path, @Nullable List<String> comment) {
-        return createSection(path, null, comment);
-    }
-
-    @NotNull
-    public ConfigSection createSection(@NotNull String path, @Nullable ConfigFormattingRules.CommentStyle commentStyle, String... comment) {
-        return createSection(path, commentStyle, comment.length == 0 ? null : Arrays.asList(comment));
     }
 
     @NotNull
@@ -619,18 +478,6 @@ public class ConfigSection extends MemoryConfiguration {
         Object result = get(path);
 
         return result != null ? result.toString() : def;
-    }
-
-    public char getChar(@NotNull String path) {
-        Object result = get(path);
-
-        return result != null && !result.toString().isEmpty() ? result.toString().charAt(0) : '\0';
-    }
-
-    public char getChar(@NotNull String path, char def) {
-        Object result = get(path);
-
-        return result != null && !result.toString().isEmpty() ? result.toString().charAt(0) : def;
     }
 
     @Override
@@ -706,22 +553,6 @@ public class ConfigSection extends MemoryConfiguration {
     }
 
     @Nullable
-    public CompatibleMaterial getMaterial(@NotNull String path) {
-        String val = getString(path);
-
-        return val != null ? CompatibleMaterial.getMaterial(val) : null;
-    }
-
-    @Nullable
-    public CompatibleMaterial getMaterial(@NotNull String path, @Nullable CompatibleMaterial def) {
-        String val = getString(path);
-
-        CompatibleMaterial mat = val != null ? CompatibleMaterial.getMaterial(val) : null;
-
-        return mat != null ? mat : def;
-    }
-
-    @Nullable
     @Override
     public <T> T getObject(@NotNull String path, @NotNull Class<T> clazz) {
         Object result = get(path);
@@ -744,10 +575,4 @@ public class ConfigSection extends MemoryConfiguration {
         return result instanceof ConfigSection ? (ConfigSection) result : null;
     }
 
-    @NotNull
-    public ConfigSection getOrCreateConfigurationSection(@NotNull String path) {
-        Object result = get(path);
-
-        return result instanceof ConfigSection ? (ConfigSection) result : createSection(path);
-    }
 }

@@ -3,10 +3,6 @@ package com.songoda.core.configuration;
 import java.util.List;
 
 public class ConfigFormattingRules {
-    int spacesBetweenMainCategories;
-    int spacesBetweenValues;
-    CommentStyle rootCommentStyle = CommentStyle.BLOCKSPACED;
-    CommentStyle mainCategoryCommentStyle = CommentStyle.SPACED;
 
     public static CommentStyle parseStyle(List<String> lines) {
         if (lines == null || lines.size() <= 2) {

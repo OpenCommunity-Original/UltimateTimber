@@ -48,14 +48,6 @@ public enum ServerProject {
         return serverPath.contains("craftbukkit") ? CRAFTBUKKIT : UNKNOWN;
     }
 
-    public static ServerProject getServerVersion() {
-        return serverProject;
-    }
-
-    public static boolean isServer(ServerProject version) {
-        return serverProject == version;
-    }
-
     public static boolean isServer(ServerProject... versions) {
         return ArrayUtils.contains(versions, serverProject);
     }

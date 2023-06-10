@@ -1,10 +1,5 @@
 package com.songoda.core.hooks;
 
-import com.songoda.core.hooks.economies.Economy;
-import com.songoda.core.hooks.economies.VaultEconomy;
-import com.songoda.core.hooks.holograms.DecentHologramsHolograms;
-import com.songoda.core.hooks.holograms.Holograms;
-import com.songoda.core.hooks.holograms.HolographicDisplaysHolograms;
 import com.songoda.core.hooks.log.CoreProtectLog;
 import com.songoda.core.hooks.log.Log;
 import org.bukkit.Bukkit;
@@ -21,9 +16,6 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public final class PluginHook<T extends Class> {
-    public static final PluginHook ECO_VAULT = new PluginHook(Economy.class, "Vault", VaultEconomy.class);
-    public static final PluginHook HOLO_DISPLAYS = new PluginHook(Holograms.class, "HolographicDisplays", HolographicDisplaysHolograms.class);
-    public static final PluginHook HOLO_DECENTHOLOGRAMS = new PluginHook(Holograms.class, "DecentHolograms", DecentHologramsHolograms.class);
     public static final PluginHook LOG_CORE_PROTECT = new PluginHook(Log.class, "CoreProtect", CoreProtectLog.class);
     private static Map<Class, PluginHook> hooks;
     /******* Start Manager stuff *******/
