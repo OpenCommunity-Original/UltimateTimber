@@ -9,6 +9,54 @@ import java.util.List;
 
 public class ConfigurationManager extends Manager {
 
+    private YamlConfiguration configuration;
+
+    public ConfigurationManager(UltimateTimber ultimateTimber) {
+        super(ultimateTimber);
+    }
+
+    @Override
+    public void reload() {
+        this.plugin.getCoreConfig().load();
+
+        File configFile = new File(this.plugin.getDataFolder() + "/config.yml");
+
+        // If an old config still exists, rename it so it doesn't interfere
+        if (configFile.exists() && this.plugin.getConfig().get("server-type") == null) {
+            File renameConfigTo = new File(this.plugin.getDataFolder() + "/config-old.yml");
+            configFile.renameTo(renameConfigTo);
+            configFile = new File(this.plugin.getDataFolder() + "/config.yml");
+        }
+
+        // Create the new config if it doesn't exist
+        if (!configFile.exists()) {
+            String newConfigName = "config.yml";
+            File newConfigFile = new File(this.plugin.getDataFolder() + "/" + newConfigName);
+            this.plugin.saveResource(newConfigName, false);
+            newConfigFile.renameTo(configFile);
+        }
+
+        this.configuration = YamlConfiguration.loadConfiguration(configFile);
+
+        for (Setting setting : Setting.values())
+            setting.reset();
+    }
+
+    @Override
+    public void disable() {
+        for (Setting setting : Setting.values())
+            setting.reset();
+    }
+
+    /**
+     * Gets the config.yml as a YamlConfiguration
+     *
+     * @return The YamlConfiguration of the config.yml
+     */
+    public YamlConfiguration getConfig() {
+        return this.configuration;
+    }
+
     public enum Setting {
         SERVER_TYPE(SettingType.STRING),
         LOCALE(SettingType.STRING),
@@ -48,7 +96,7 @@ public class ConfigurationManager extends Manager {
         SCATTER_TREE_BLOCKS_ON_GROUND(SettingType.BOOLEAN),
         FRAGILE_BLOCKS(SettingType.STRING_LIST);
 
-        private SettingType settingType;
+        private final SettingType settingType;
         private Object value = null;
 
         Setting(SettingType settingType) {
@@ -156,54 +204,6 @@ public class ConfigurationManager extends Manager {
         DOUBLE,
         STRING,
         STRING_LIST
-    }
-
-    private YamlConfiguration configuration;
-
-    public ConfigurationManager(UltimateTimber ultimateTimber) {
-        super(ultimateTimber);
-    }
-
-    @Override
-    public void reload() {
-        this.plugin.getCoreConfig().load();
-
-        File configFile = new File(this.plugin.getDataFolder() + "/config.yml");
-
-        // If an old config still exists, rename it so it doesn't interfere
-        if (configFile.exists() && this.plugin.getConfig().get("server-type") == null) {
-            File renameConfigTo = new File(this.plugin.getDataFolder() + "/config-old.yml");
-            configFile.renameTo(renameConfigTo);
-            configFile = new File(this.plugin.getDataFolder() + "/config.yml");
-        }
-
-        // Create the new config if it doesn't exist
-        if (!configFile.exists()) {
-            String newConfigName = "config.yml";
-            File newConfigFile = new File(this.plugin.getDataFolder() + "/" + newConfigName);
-            this.plugin.saveResource(newConfigName, false);
-            newConfigFile.renameTo(configFile);
-        }
-
-        this.configuration = YamlConfiguration.loadConfiguration(configFile);
-
-        for (Setting setting : Setting.values())
-            setting.reset();
-    }
-
-    @Override
-    public void disable() {
-        for (Setting setting : Setting.values())
-            setting.reset();
-    }
-
-    /**
-     * Gets the config.yml as a YamlConfiguration
-     *
-     * @return The YamlConfiguration of the config.yml
-     */
-    public YamlConfiguration getConfig() {
-        return this.configuration;
     }
 
 }

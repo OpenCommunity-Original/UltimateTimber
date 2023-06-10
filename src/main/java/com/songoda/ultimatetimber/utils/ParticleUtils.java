@@ -2,7 +2,6 @@ package com.songoda.ultimatetimber.utils;
 
 import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatetimber.tree.ITreeBlock;
-import com.songoda.ultimatetimber.tree.TreeDefinition;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Particle;

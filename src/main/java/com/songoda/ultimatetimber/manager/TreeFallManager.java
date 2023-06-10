@@ -23,8 +23,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.stream.Collectors;
-
 public class TreeFallManager extends Manager implements Listener {
 
     private int maxLogBlocksAllowed;
@@ -63,10 +61,7 @@ public class TreeFallManager extends Manager implements Listener {
         }
 
         // Condition checks
-        boolean isValid = true;
-
-        if (ConfigurationManager.Setting.DISABLED_WORLDS.getStringList().contains(player.getWorld().getName()))
-            isValid = false;
+        boolean isValid = !ConfigurationManager.Setting.DISABLED_WORLDS.getStringList().contains(player.getWorld().getName());
 
         if (!ConfigurationManager.Setting.ALLOW_CREATIVE_MODE.getBoolean() && player.getGameMode().equals(GameMode.CREATIVE))
             isValid = false;
@@ -155,7 +150,6 @@ public class TreeFallManager extends Manager implements Listener {
      * Checks if a player is doing a certain action required to topple a tree
      *
      * @param player The player to check
-     *
      * @return True if the check passes, otherwise false
      */
     private boolean checkToppleWhile(Player player) {

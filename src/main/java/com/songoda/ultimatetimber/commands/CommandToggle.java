@@ -20,9 +20,9 @@ public class CommandToggle extends AbstractCommand {
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         if (UltimateTimber.getInstance().getChoppingManager().togglePlayer((Player) sender)) {
-            LocaleAPI.sendPrefixedMessage(sender,"command.toggle.enabled");
+            LocaleAPI.sendPrefixedMessage(sender, "command.toggle.enabled");
         } else {
-            LocaleAPI.sendPrefixedMessage(sender,"command.toggle.disabled");
+            LocaleAPI.sendPrefixedMessage(sender, "command.toggle.disabled");
         }
         return ReturnType.SUCCESS;
     }
@@ -44,7 +44,7 @@ public class CommandToggle extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return LocaleAPI.getMessage(null,"command.toggle.description");
+        return LocaleAPI.getMessage(null, "command.toggle.description");
     }
 
 }

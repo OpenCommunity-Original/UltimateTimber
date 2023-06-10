@@ -5,11 +5,7 @@ import com.songoda.ultimatetimber.utils.LocaleAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ChoppingManager extends Manager {
 
@@ -86,7 +82,7 @@ public class ChoppingManager extends Manager {
     public boolean isInCooldown(Player player) {
         boolean cooldowned = this.useCooldown && this.cooldownedPlayers.containsKey(player.getUniqueId());
         if (cooldowned && !this.cooldownedPlayers.get(player.getUniqueId())) {
-            LocaleAPI.sendPrefixedMessage(player,"event.on.cooldown");
+            LocaleAPI.sendPrefixedMessage(player, "event.on.cooldown");
             this.cooldownedPlayers.replace(player.getUniqueId(), true);
         }
         return cooldowned;

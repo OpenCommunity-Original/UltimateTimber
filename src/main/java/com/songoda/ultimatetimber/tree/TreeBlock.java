@@ -37,9 +37,8 @@ public class TreeBlock implements ITreeBlock<Block> {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof TreeBlock)) return false;
+        if (!(o instanceof TreeBlock oTreeBlock)) return false;
         if (o == this) return true;
-        TreeBlock oTreeBlock = (TreeBlock)o;
         return oTreeBlock.block.equals(this.block) && oTreeBlock.treeBlockType.equals(this.treeBlockType);
     }
 

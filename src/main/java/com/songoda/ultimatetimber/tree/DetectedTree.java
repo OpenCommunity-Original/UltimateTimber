@@ -4,8 +4,8 @@ import org.bukkit.block.Block;
 
 public class DetectedTree {
 
-    private TreeDefinition treeDefinition;
-    private TreeBlockSet<Block> detectedTreeBlocks;
+    private final TreeDefinition treeDefinition;
+    private final TreeBlockSet<Block> detectedTreeBlocks;
 
     public DetectedTree(TreeDefinition treeDefinition, TreeBlockSet<Block> detectedTreeBlocks) {
         this.treeDefinition = treeDefinition;

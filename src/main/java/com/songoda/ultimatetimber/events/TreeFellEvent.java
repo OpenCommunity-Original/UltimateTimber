@@ -9,19 +9,19 @@ import org.bukkit.event.HandlerList;
  */
 public class TreeFellEvent extends TreeEvent {
 
+    private static final HandlerList handlers = new HandlerList();
+
     public TreeFellEvent(Player player, DetectedTree detectedTree) {
         super(player, detectedTree);
-    }
-
-    private static final HandlerList handlers = new HandlerList();
-    
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
     }
 
     public static HandlerList getHandlerList() {
         return handlers;
     }
-	
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
 }

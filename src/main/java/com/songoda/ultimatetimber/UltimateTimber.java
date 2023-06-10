@@ -8,15 +8,7 @@ import com.songoda.core.hooks.LogManager;
 import com.songoda.ultimatetimber.commands.CommandGiveAxe;
 import com.songoda.ultimatetimber.commands.CommandReload;
 import com.songoda.ultimatetimber.commands.CommandToggle;
-import com.songoda.ultimatetimber.manager.ChoppingManager;
-import com.songoda.ultimatetimber.manager.ConfigurationManager;
-import com.songoda.ultimatetimber.manager.Manager;
-import com.songoda.ultimatetimber.manager.PlacedBlockManager;
-import com.songoda.ultimatetimber.manager.SaplingManager;
-import com.songoda.ultimatetimber.manager.TreeAnimationManager;
-import com.songoda.ultimatetimber.manager.TreeDefinitionManager;
-import com.songoda.ultimatetimber.manager.TreeDetectionManager;
-import com.songoda.ultimatetimber.manager.TreeFallManager;
+import com.songoda.ultimatetimber.manager.*;
 import com.songoda.ultimatetimber.utils.LocaleAPI;
 import org.bukkit.Bukkit;
 

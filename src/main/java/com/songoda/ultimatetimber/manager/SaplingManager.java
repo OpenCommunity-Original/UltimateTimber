@@ -17,8 +17,8 @@ import java.util.Set;
 
 public class SaplingManager extends Manager {
 
-    private Random random;
-    private Set<Location> protectedSaplings;
+    private final Random random;
+    private final Set<Location> protectedSaplings;
 
     public SaplingManager(UltimateTimber ultimateTimber) {
         super(ultimateTimber);
@@ -41,7 +41,7 @@ public class SaplingManager extends Manager {
      * Takes into account config settings
      *
      * @param treeDefinition The TreeDefinition of the sapling
-     * @param treeBlock The ITreeBlock to replant for
+     * @param treeBlock      The ITreeBlock to replant for
      */
     public void replantSapling(TreeDefinition treeDefinition, ITreeBlock treeBlock) {
         if (!ConfigurationManager.Setting.REPLANT_SAPLINGS.getBoolean())
@@ -59,7 +59,7 @@ public class SaplingManager extends Manager {
      * Takes into account config settings
      *
      * @param treeDefinition The TreeDefinition of the sapling
-     * @param treeBlock The ITreeBlock to replant for
+     * @param treeBlock      The ITreeBlock to replant for
      */
     public void replantSaplingWithChance(TreeDefinition treeDefinition, ITreeBlock treeBlock) {
         if (!ConfigurationManager.Setting.FALLING_BLOCKS_REPLANT_SAPLINGS.getBoolean() || !treeBlock.getLocation().getBlock().getType().equals(Material.AIR))
@@ -76,7 +76,7 @@ public class SaplingManager extends Manager {
      * Replants a sapling given a TreeDefinition and Location
      *
      * @param treeDefinition The TreeDefinition of the sapling
-     * @param treeBlock The ITreeBlock to replant for
+     * @param treeBlock      The ITreeBlock to replant for
      */
     private void internalReplant(TreeDefinition treeDefinition, ITreeBlock treeBlock) {
         TreeDefinitionManager treeDefinitionManager = this.plugin.getTreeDefinitionManager();

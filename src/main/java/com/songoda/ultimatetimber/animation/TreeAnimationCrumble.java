@@ -3,13 +3,7 @@ package com.songoda.ultimatetimber.animation;
 import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.ultimatetimber.UltimateTimber;
 import com.songoda.ultimatetimber.manager.ConfigurationManager;
-import com.songoda.ultimatetimber.tree.DetectedTree;
-import com.songoda.ultimatetimber.tree.FallingTreeBlock;
-import com.songoda.ultimatetimber.tree.ITreeBlock;
-import com.songoda.ultimatetimber.tree.TreeBlock;
-import com.songoda.ultimatetimber.tree.TreeBlockSet;
-import com.songoda.ultimatetimber.tree.TreeBlockType;
-import com.songoda.ultimatetimber.tree.TreeDefinition;
+import com.songoda.ultimatetimber.tree.*;
 import com.songoda.ultimatetimber.utils.BlockUtils;
 import com.songoda.ultimatetimber.utils.ParticleUtils;
 import com.songoda.ultimatetimber.utils.SoundUtils;
@@ -72,7 +66,7 @@ public class TreeAnimationCrumble extends TreeAnimation {
                                 continue;
                         }
 
-                        FallingTreeBlock fallingTreeBlock = TreeAnimationCrumble.this.convertToFallingBlock((TreeBlock)treeBlock);
+                        FallingTreeBlock fallingTreeBlock = TreeAnimationCrumble.this.convertToFallingBlock((TreeBlock) treeBlock);
                         if (fallingTreeBlock == null)
                             continue;
 

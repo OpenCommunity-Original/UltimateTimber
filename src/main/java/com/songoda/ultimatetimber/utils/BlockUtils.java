@@ -16,14 +16,13 @@ public class BlockUtils {
 
     public static Collection<ItemStack> getBlockDrops(ITreeBlock treeBlock) {
         Set<ItemStack> drops = new HashSet<>();
-        if (treeBlock.getBlock() instanceof Block) {
-            Block block = (Block)treeBlock.getBlock();
+        if (treeBlock.getBlock() instanceof Block block) {
             CompatibleMaterial material = CompatibleMaterial.getMaterial(block);
             if (material.isAir())
                 return drops;
             drops.add(CompatibleMaterial.getMaterial(block).getItem());
         } else if (treeBlock.getBlock() instanceof FallingBlock) {
-            CompatibleMaterial material = CompatibleMaterial.getMaterial((FallingBlock)treeBlock.getBlock());
+            CompatibleMaterial material = CompatibleMaterial.getMaterial((FallingBlock) treeBlock.getBlock());
             if (material == null)
                 return drops;
             drops.add(material.getItem());

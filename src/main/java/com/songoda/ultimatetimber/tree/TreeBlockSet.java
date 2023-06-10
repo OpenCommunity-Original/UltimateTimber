@@ -1,22 +1,13 @@
 package com.songoda.ultimatetimber.tree;
 
-import org.bukkit.block.Block;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TreeBlockSet<BlockType> implements Collection {
 
     private final ITreeBlock<BlockType> initialLogBlock;
-    private List<ITreeBlock<BlockType>> logBlocks;
     private final List<ITreeBlock<BlockType>> leafBlocks;
+    private List<ITreeBlock<BlockType>> logBlocks;
 
     public TreeBlockSet() {
         this.initialLogBlock = null;
@@ -100,8 +91,7 @@ public class TreeBlockSet<BlockType> implements Collection {
     @Override
     @SuppressWarnings("unchecked")
     public boolean add(Object o) {
-        if (!(o instanceof ITreeBlock)) return false;
-        ITreeBlock treeBlock = (ITreeBlock) o;
+        if (!(o instanceof ITreeBlock treeBlock)) return false;
         switch (treeBlock.getTreeBlockType()) {
             case LOG:
                 return this.logBlocks.add(treeBlock);
@@ -113,8 +103,7 @@ public class TreeBlockSet<BlockType> implements Collection {
 
     @Override
     public boolean remove(Object o) {
-        if (!(o instanceof ITreeBlock)) return false;
-        ITreeBlock treeBlock = (ITreeBlock) o;
+        if (!(o instanceof ITreeBlock treeBlock)) return false;
         switch (treeBlock.getTreeBlockType()) {
             case LOG:
                 return this.logBlocks.remove(treeBlock);
@@ -215,7 +204,7 @@ public class TreeBlockSet<BlockType> implements Collection {
         Set<ITreeBlock<BlockType>> treeBlocks = new HashSet<>();
         for (Object o : a)
             if (o instanceof ITreeBlock)
-                treeBlocks.add((ITreeBlock<BlockType>)o);
+                treeBlocks.add((ITreeBlock<BlockType>) o);
         return treeBlocks.toArray();
     }
 

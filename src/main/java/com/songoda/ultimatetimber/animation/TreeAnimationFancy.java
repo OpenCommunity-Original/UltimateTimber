@@ -3,11 +3,7 @@ package com.songoda.ultimatetimber.animation;
 import com.songoda.ultimatetimber.UltimateTimber;
 import com.songoda.ultimatetimber.manager.ConfigurationManager;
 import com.songoda.ultimatetimber.manager.TreeAnimationManager;
-import com.songoda.ultimatetimber.tree.DetectedTree;
-import com.songoda.ultimatetimber.tree.FallingTreeBlock;
-import com.songoda.ultimatetimber.tree.ITreeBlock;
-import com.songoda.ultimatetimber.tree.TreeBlock;
-import com.songoda.ultimatetimber.tree.TreeBlockSet;
+import com.songoda.ultimatetimber.tree.*;
 import com.songoda.ultimatetimber.utils.BlockUtils;
 import com.songoda.ultimatetimber.utils.ParticleUtils;
 import com.songoda.ultimatetimber.utils.SoundUtils;
@@ -31,7 +27,7 @@ public class TreeAnimationFancy extends TreeAnimation {
         boolean useCustomParticles = ConfigurationManager.Setting.USE_CUSTOM_PARTICLES.getBoolean();
 
         ITreeBlock<Block> initialTreeBlock = this.detectedTree.getDetectedTreeBlocks().getInitialLogBlock();
-        FallingTreeBlock initialFallingBlock = this.convertToFallingBlock((TreeBlock)this.detectedTree.getDetectedTreeBlocks().getInitialLogBlock());
+        FallingTreeBlock initialFallingBlock = this.convertToFallingBlock((TreeBlock) this.detectedTree.getDetectedTreeBlocks().getInitialLogBlock());
 
         if (useCustomSound)
             SoundUtils.playFallingSound(initialTreeBlock);
@@ -40,7 +36,7 @@ public class TreeAnimationFancy extends TreeAnimation {
 
         this.fallingTreeBlocks = new TreeBlockSet<>(initialFallingBlock);
         for (ITreeBlock<Block> treeBlock : this.detectedTree.getDetectedTreeBlocks().getAllTreeBlocks()) {
-            FallingTreeBlock fallingTreeBlock = this.convertToFallingBlock((TreeBlock)treeBlock);
+            FallingTreeBlock fallingTreeBlock = this.convertToFallingBlock((TreeBlock) treeBlock);
             if (fallingTreeBlock == null)
                 continue;
 
@@ -48,7 +44,7 @@ public class TreeAnimationFancy extends TreeAnimation {
             this.fallingTreeBlocks.add(fallingTreeBlock);
 
             if (useCustomParticles)
-            ParticleUtils.playFallingParticles(treeBlock);
+                ParticleUtils.playFallingParticles(treeBlock);
 
             double multiplier = (treeBlock.getLocation().getY() - this.player.getLocation().getY()) * 0.05;
             fallingBlock.setVelocity(velocityVector.clone().multiply(multiplier));

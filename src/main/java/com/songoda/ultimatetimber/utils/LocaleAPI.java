@@ -30,8 +30,8 @@ public class LocaleAPI implements Listener {
     private static final Map<Player, Locale> playerLocales = new HashMap<>();
     private static final Locale DEFAULT_LOCALE = Locale.US;
     private static final List<Locale> SUPPORTED_LOCALES = new ArrayList<>();
-    private static String baseName;
     private static final Map<String, YamlConfiguration> configurationCache = new ConcurrentHashMap<>();
+    private static String baseName;
 
     /**
      * Sets the locale for a player.
@@ -191,6 +191,35 @@ public class LocaleAPI implements Listener {
         }
     }
 
+    /**
+     * Sends a localized message with a prefix to a command sender.
+     *
+     * @param sender       The command sender to send the message to.
+     * @param messageKey   The key of the message to send.
+     * @param placeholders The placeholders to replace in the message.
+     */
+    public static void sendPrefixedMessage(CommandSender sender, String messageKey, String... placeholders) {
+        Player player = (Player) sender;
+        String message = LocaleAPI.getMessage(player, messageKey);
+        String prefix = LocaleAPI.getMessage(player, "general.nametag.prefix");
+
+        if (sender instanceof Player) {
+            for (int i = 0; i < placeholders.length; i += 2) {
+                message = message.replace(placeholders[i], placeholders[i + 1]);
+            }
+            player.sendMessage(TextUtils.formatText((prefix == null ? "" : prefix + " ") + message));
+        } else {
+            for (int i = 0; i < placeholders.length; i += 2) {
+                message = message.replace(placeholders[i], placeholders[i + 1]);
+            }
+            sender.sendMessage(TextUtils.formatText(message));
+        }
+    }
+
+    public static String getFormattedMessage(Player player, String key, String... placeholders) {
+        String message = getMessage(player, key, placeholders);
+        return TextUtils.formatText(message);
+    }
 
     /**
      * Loads the supported locales from the plugin's messages folder.
@@ -239,36 +268,6 @@ public class LocaleAPI implements Listener {
         } else {
             setPlayerLocale(player, DEFAULT_LOCALE);
         }
-    }
-
-    /**
-     * Sends a localized message with a prefix to a command sender.
-     *
-     * @param sender       The command sender to send the message to.
-     * @param messageKey   The key of the message to send.
-     * @param placeholders The placeholders to replace in the message.
-     */
-    public static void sendPrefixedMessage(CommandSender sender, String messageKey, String... placeholders) {
-        Player player = (Player) sender;
-        String message = LocaleAPI.getMessage(player, messageKey);
-        String prefix = LocaleAPI.getMessage(player, "general.nametag.prefix");
-
-        if (sender instanceof Player) {
-            for (int i = 0; i < placeholders.length; i += 2) {
-                message = message.replace(placeholders[i], placeholders[i + 1]);
-            }
-            player.sendMessage(TextUtils.formatText((prefix == null ? "" : prefix + " ") + message));
-        } else {
-            for (int i = 0; i < placeholders.length; i += 2) {
-                message = message.replace(placeholders[i], placeholders[i + 1]);
-            }
-            sender.sendMessage(TextUtils.formatText(message));
-        }
-    }
-
-    public static String getFormattedMessage(Player player, String key, String... placeholders) {
-        String message = getMessage(player, key, placeholders);
-        return TextUtils.formatText(message);
     }
 
 }
