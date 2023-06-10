@@ -1,0 +1,19 @@
+# General Messages
+general:
+  nametag:
+    prefix: '  &6&lДровокол&f&8'
+  nopermission: '&cУ вас немає дозволу на це!'
+
+# Command Messages
+
+command:
+  toggle:
+    description: 'Увімкнути або вимкнути режим вирубки'
+    enabled: '&7Режим вирубки: &aУвімкнено'
+    disabled: '&7Режим вирубки: &cВимкнено'
+
+# Event Messages
+
+event:
+  'on':
+    cooldown: '&eВи у режимі очікування та наразі не можете вирубати дерева.'

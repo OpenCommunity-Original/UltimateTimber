@@ -1,0 +1,89 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://jitpack.io')
+    }
+
+    maven {
+        url = uri('https://maven.enginehub.org/repo/')
+    }
+
+    maven {
+        url = uri('https://repo.codemc.io/repository/maven-public/')
+    }
+
+    maven {
+        url = uri('https://repo.viaversion.com')
+    }
+
+    maven {
+        url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/')
+    }
+
+    maven {
+        url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/')
+    }
+
+    maven {
+        url = uri('https://repo.mikeprimm.com/')
+    }
+
+    maven {
+        url = uri('https://repo.pl3x.net/')
+    }
+
+    maven {
+        url = uri('https://maven.playpro.com')
+    }
+
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
+
+dependencies {
+    compileOnly 'com.zaxxer:HikariCP:5.0.1'
+    compileOnly 'com.mojang:authlib:3.11.50'
+    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
+    compileOnly 'com.viaversion:viaversion-api:4.5.1'
+    compileOnly 'me.clip:placeholderapi:2.10.9'
+    compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.3.2'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.8-SNAPSHOT'
+    compileOnly 'com.sk89q.worldedit:worldedit-core:7.2.14-SNAPSHOT'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7.1'
+    compileOnly 'net.coreprotect:coreprotect:21.3'
+    compileOnly 'com.github.decentsoftware-eu:decentholograms:2.2.5'
+    compileOnly 'us.dynmap:dynmap-api:3.4'
+    compileOnly 'com.github.jojodmo:ItemBridge:b0054538c1'
+    compileOnly 'io.github.thebusybiscuit:slimefun4:RC-28'
+    compileOnly 'com.github.LoneDev6:api-itemsadder:2.3.8'
+    compileOnly 'org.json:json:20220924'
+}
+
+group = 'com.songoda'
+version = '2.4.0'
+description = 'UltimateClaims'
+java.sourceCompatibility = JavaVersion.VERSION_19
+
+processResources {
+    filter { String line -> line.replace('${version}', project.version.toString()) }
+}
+
+shadowJar {
+    archiveFileName = 'UltimateTimber-' + project.version.toString() + '.jar'
+}
+
+artifacts {
+    shadowJar
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+assemble.dependsOn(shadowJar)
