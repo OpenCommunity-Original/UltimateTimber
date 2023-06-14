@@ -21,7 +21,7 @@ disabled-worlds:
 
 # The max number of logs that can be broken at one time
 # Default: 150
-max-logs-per-chop: 150
+max-logs-per-chop: 100
 
 # The minimum number of leaves required for something to be considered a tree
 # Default: 5
@@ -39,12 +39,12 @@ realistic-tool-damage: true
 # Protect the tool used to chop down the tree from breaking
 # Prevents the tree from being toppled if the tool would break
 # Default: false
-protect-tool: false
+protect-tool: true
 
 # Use the silk touch enchantment if the tool has it
 # Logs and leaves will drop their original block 100% of the time
 # Default: true
-apply-silk-touch: true
+apply-silk-touch: false
 
 # Damage the tool extra for each leaf block broken, this is vanilla behavior but can be disabled here
 # Does nothing if realistic-tool-damage is false
@@ -66,7 +66,7 @@ only-detect-logs-upwards: true
 # Only topple trees while the player is doing something
 # Valid values: SNEAKING, NOT_SNEAKING, ALWAYS
 # Default: ALWAYS
-only-topple-while: ALWAYS
+only-topple-while: SNEAKING
 
 # Allow toppling trees in creative mode
 # Default: true
@@ -78,13 +78,13 @@ require-chop-permission: false
 
 # If a player should only be allowed to chop one tree per cooldown length
 # Default: false
-player-tree-topple-cooldown: false
+player-tree-topple-cooldown: true
 
 # The amount of seconds a player has to wait before they can chop a tree again
 # Does nothing if player-tree-topple-cooldown is false
 # The time is in seconds and must be a postive whole number
 # Default: 5
-player-tree-topple-cooldown-length: 5
+player-tree-topple-cooldown-length: 3
 
 # Allow players to topple trees regardless of what they are holding in their hand
 # Default: false
@@ -122,7 +122,7 @@ falling-blocks-deal-damage: true
 # The amount of damage that falling tree blocks do
 # This does nothing if falling-blocks-deal-damage is false
 # Default: 1
-falling-block-damage: 1
+falling-block-damage: 4
 
 # Automatically add tree blocks to the player's inventory instead of dropping them
 # Default: false
@@ -156,7 +156,7 @@ ignore-placed-blocks-memory-size: 5000
 # Applies experience when using Jobs/mcMMO
 # Only does something if Jobs or mcMMO is installed
 # Default: true
-hooks-apply-experience: true
+hooks-apply-experience: false
 
 # Requires the tree feller ability in mcMMO to be active to use timber
 # Only does something if mcMMO is installed
@@ -196,7 +196,7 @@ trees:
     leaf-loot:
       0:
         material: OAK_SAPLING
-        chance: 5
+        chance: 4
       1:
         material: APPLE
         chance: 0.5
@@ -222,7 +222,30 @@ trees:
     leaf-loot:
       0:
         material: SPRUCE_SAPLING
-        chance: 5
+        chance: 4
+    entire-tree-loot: []
+    required-tools: []
+    required-axe: false
+  cherry:
+    logs:
+      - CHERRY_LOG
+      - STRIPPED_CHERRY_LOG
+      - CHERRY_WOOD
+      - STRIPPED_CHERRY_WOOD
+    leaves:
+      - CHERRY_LEAVES
+    sapling: CHERRY_SAPLING
+    plantable-soil: []
+    max-log-distance-from-trunk: 10
+    max-leaf-distance-from-log: 4
+    search-for-leaves-diagonally: false
+    drop-original-log: true
+    drop-original-leaf: false
+    log-loot: []
+    leaf-loot:
+      0:
+        material: CHERRY_SAPLING
+        chance: 0.8
     entire-tree-loot: []
     required-tools: []
     required-axe: false
@@ -245,7 +268,7 @@ trees:
     leaf-loot:
       0:
         material: BIRCH_SAPLING
-        chance: 5
+        chance: 4
     entire-tree-loot: []
     required-tools: []
     required-axe: false
@@ -291,7 +314,7 @@ trees:
     leaf-loot:
       0:
         material: ACACIA_SAPLING
-        chance: 5
+        chance: 3
     entire-tree-loot: []
     required-tools: []
     required-axe: false
@@ -341,7 +364,7 @@ trees:
     leaf-loot:
       0:
         material: AZALEA
-        chance: 5
+        chance: 0.9
     entire-tree-loot: [ ]
     required-tools: [ ]
     required-axe: false
@@ -357,18 +380,15 @@ trees:
     sapling: MANGROVE_PROPAGULE
     plantable-soil: [ ]
     max-log-distance-from-trunk: 27
-    max-leaf-distance-from-log: 5
-    search-for-leaves-diagonally: false
+    max-leaf-distance-from-log: 6
+    search-for-leaves-diagonally: true
     drop-original-log: true
     drop-original-leaf: false
     log-loot: [ ]
     leaf-loot:
       0:
         material: MANGROVE_PROPAGULE
-        chance: 5
-      1:
-        material: APPLE
-        chance: 0.5
+        chance: 0.4
     entire-tree-loot: [ ]
     required-tools: [ ]
     required-axe: false
@@ -475,12 +495,6 @@ global-plantable-soil:
 # Valid command placeholders: %player%, %type%, %xPos%, %yPos%, %zPos%
 global-log-loot:
   0:
-    material: DIAMOND
-    chance: 0
-  1:
-    command: 'eco give %player% 5'
-    chance: 0
-  2:
     material: GOLDEN_APPLE
     command: 'broadcast %player% found a golden apple in a %type% tree at %xPos% %yPos% %zPos%!'
     chance: 0
@@ -492,7 +506,7 @@ global-log-loot:
 # Valid command placeholders: %player%, %type%, %xPos%, %yPos%, %zPos%
 global-leaf-loot:
   0:
-    material: GOLDEN_APPLE
+    material: APPLE
     chance: 0
 
 # Custom entire tree loot that is available for all tree types

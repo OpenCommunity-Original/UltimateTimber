@@ -28,6 +28,13 @@ public enum CompatibleMaterial {
      ACACIA_DOOR_ITEM(430),
      DARK_OAK_DOOR_ITEM(431),
      */
+    /* 1.20 */
+    CHERRY_LOG(),
+    STRIPPED_CHERRY_LOG(),
+    CHERRY_WOOD(),
+    STRIPPED_CHERRY_WOOD(),
+    CHERRY_LEAVES(),
+    CHERRY_SAPLING(),
 
     /* 1.19 */
     ACACIA_CHEST_BOAT(),
