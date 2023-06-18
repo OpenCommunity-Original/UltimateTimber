@@ -2,6 +2,7 @@ package com.songoda.ultimatetimber.manager;
 
 import com.songoda.core.compatibility.CompatibleHand;
 import com.songoda.core.hooks.LogManager;
+import com.songoda.core.hooks.WorldGuardHook;
 import com.songoda.core.utils.ItemUtils;
 import com.songoda.core.world.SItemStack;
 import com.songoda.ultimatetimber.UltimateTimber;
@@ -12,6 +13,7 @@ import com.songoda.ultimatetimber.tree.DetectedTree;
 import com.songoda.ultimatetimber.tree.ITreeBlock;
 import com.songoda.ultimatetimber.tree.TreeBlockSet;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 public class TreeFallManager extends Manager implements Listener {
 
     private int maxLogBlocksAllowed;
+    private boolean disInWorldGuard;
 
     public TreeFallManager(UltimateTimber ultimateTimber) {
         super(ultimateTimber);
@@ -35,6 +38,7 @@ public class TreeFallManager extends Manager implements Listener {
     @Override
     public void reload() {
         this.maxLogBlocksAllowed = ConfigurationManager.Setting.MAX_LOGS_PER_CHOP.getInt();
+        this.disInWorldGuard = ConfigurationManager.Setting.DISABLE_IN_WORLDGUARD_REGIONS.getBoolean();
     }
 
     @Override
@@ -74,6 +78,15 @@ public class TreeFallManager extends Manager implements Listener {
 
         if (!choppingManager.isChopping(player))
             isValid = false;
+
+        // WorldGuard check
+        if (this.disInWorldGuard) {
+            Boolean flag;
+            Chunk centerChunk = player.getLocation().getChunk();
+            if ((flag = WorldGuardHook.getBooleanFlag(centerChunk, "allow-claims")) != null && !flag) {
+                isValid = false;
+            }
+        }
 
         if (choppingManager.isInCooldown(player))
             isValid = false;

@@ -3,7 +3,7 @@ version: ${version}
 authors: [Songoda]
 main: com.songoda.ultimatetimber.UltimateTimber
 api-version: "1.20"
-softdepend: [CoreProtect]
+softdepend: [CoreProtect, WorldGuard]
 commands:
   ut:
     description: Reloads the configuration file

@@ -68,7 +68,6 @@ dependencies {
 group = 'com.songoda'
 version = '2.4.0'
 description = 'UltimateClaims'
-java.sourceCompatibility = JavaVersion.VERSION_19
 
 processResources {
     filter { String line -> line.replace('${version}', project.version.toString()) }

@@ -7,6 +7,7 @@ import com.songoda.core.hooks.LogManager;
 import com.songoda.ultimatetimber.commands.CommandGiveAxe;
 import com.songoda.ultimatetimber.commands.CommandReload;
 import com.songoda.ultimatetimber.commands.CommandToggle;
+import com.songoda.core.hooks.WorldGuardHook;
 import com.songoda.ultimatetimber.manager.*;
 import com.songoda.ultimatetimber.utils.LocaleAPI;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ public class UltimateTimber extends SongodaPlugin {
     @Override
     public void onPluginLoad() {
         INSTANCE = this;
+        WorldGuardHook.addHook("allow-claims", true);
     }
 
     @Override

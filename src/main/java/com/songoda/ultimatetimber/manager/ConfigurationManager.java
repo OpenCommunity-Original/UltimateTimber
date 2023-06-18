@@ -72,6 +72,7 @@ public class ConfigurationManager extends Manager {
         BREAK_ENTIRE_TREE_BASE(SettingType.BOOLEAN),
         DESTROY_INITIATED_BLOCK(SettingType.BOOLEAN),
         ONLY_DETECT_LOGS_UPWARDS(SettingType.BOOLEAN),
+        DISABLE_IN_WORLDGUARD_REGIONS(SettingType.BOOLEAN),
         ONLY_TOPPLE_WHILE(SettingType.STRING),
         ALLOW_CREATIVE_MODE(SettingType.BOOLEAN),
         REQUIRE_CHOP_PERMISSION(SettingType.BOOLEAN),
